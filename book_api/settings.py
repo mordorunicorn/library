@@ -148,4 +148,7 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json'
 }
 
+JSON_API_FORMAT_TYPES = 'dasherize'
+JSON_API_PLURALIZE_TYPES = True
+
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
