@@ -15,3 +15,17 @@ class BookListView(BookMixin, generics.ListCreateAPIView):
 
 class BookDetailView(BookMixin, generics.RetrieveUpdateDestroyAPIView):
     pass
+
+
+class AuthorMixin():
+    resource_name = 'authors'
+    serializer_class = serializers.AuthorSerializer
+    queryset = models.Author.objects.all()
+
+
+class AuthorListView(AuthorMixin, generics.ListCreateAPIView):
+    pass
+
+
+class AuthorDetailView(AuthorMixin, generics.RetrieveUpdateDestroyAPIView):
+    pass
