@@ -9,6 +9,7 @@ GENRES = [
     ('memoir', 'Memoir'),
     ('mystery', 'Mystery'),
     ('reference', 'Reference'),
+    ('rpg', 'Role Playing Game'),
     ('science-fiction', 'Science Fiction'),
     ('theology', 'Theology'),
 ]
