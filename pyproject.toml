@@ -2,21 +2,15 @@
 line-length = 110
 skip-string-normalization = true
 string-normalization = false
-target-version = ['py35']
+target-version = ['py38']
 include = '\.pyi?$'
 exclude = '''
 /(
     \.eggs
   | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
   | \.venv
   | _build
-  | buck-out
   | build
   | dist
-  | alembic
-  | docker_dev
 )/
 '''
