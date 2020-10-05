@@ -1,18 +1,19 @@
 import simplejson as json
 from django.test import TestCase
 
-from api.models import Author, Book
+from api.models import Author, Book, Series
 
 
 class BookCreateTests(TestCase):
-
     def setUp(self):
         self.author = Author.objects.create(first_name='J.R.R.', last_name='Tolkien')
+        self.series = Series.objects.create(name='The Lord of the Rings')
 
     def test_can_create_a_book(self):
         response = self.client.post('/api/books', self.book_data, 'application/vnd.api+json')
         self.assertEqual(201, response.status_code)
         self.assertEqual(1, Book.objects.count())
+        self.assertEqual(1, Book.objects.all()[0].authors.count())
 
     def test_cannot_create_book_without_title(self):
         data = self.book_data
@@ -30,29 +31,19 @@ class BookCreateTests(TestCase):
                 'type': 'books',
                 'attributes': {
                     'title': 'The Fellowship of the Ring',
-                    'series': 'The Lord of the Rings',
                     'series_num': 1,
                     'year': 1954,
                     'genre': 'fantasy',
                     'age_group': 'adult',
-                    'cover_url': 'https://images.gr-assets.com/books/1419127843l/18510.jpg'
+                    'cover_url': 'https://images.gr-assets.com/books/1419127843l/18510.jpg',
+                    'series': {'type': 'series', 'id': self.series.pk},
                 },
-                'relationships': {
-                    'authors': {
-                        'data': [
-                            {
-                                'type': 'authors',
-                                'id': self.author.pk
-                            }
-                        ]
-                    }
-                }
+                'relationships': {'authors': {'data': [{'type': 'authors', 'id': self.author.pk}]}},
             }
         }
 
 
 class BookGetEditTests(TestCase):
-
     def setUp(self):
         self.author = Author.objects.create(first_name='Bram', last_name='Stoker')
         self.book = Book.objects.create(title='Dracula', year=1897, genre='horror')
@@ -82,18 +73,16 @@ class BookGetEditTests(TestCase):
                     'year': 1897,
                     'genre': 'horror',
                     'read': False,
-                    'series': None,
                     'series_num': None,
                     'age_group': 'adult',
-                    'cover_url': None
+                    'cover_url': None,
                 },
                 'relationships': {
                     'authors': {
-                        'data': [
-                            {'type': 'authors', 'id': str(self.author.pk)}
-                        ],
-                        'meta': {'count': 1}
-                    }
-                }
+                        'data': [{'type': 'authors', 'id': str(self.author.pk)}],
+                        'meta': {'count': 1},
+                    },
+                    'series': {'data': None},
+                },
             }
         }

@@ -7,7 +7,9 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     authors = models.ManyToManyField("Author", related_name="books")
     year = models.IntegerField()
-    series = models.CharField(max_length=100, null=True, blank=True)
+    series = models.ForeignKey(
+        "Series", related_name="books", on_delete=models.SET_NULL, null=True, blank=True
+    )
     series_num = models.IntegerField(null=True, blank=True)
     genre = models.CharField(max_length=50, choices=utils.GENRES, default="fiction")
     age_group = models.CharField(max_length=50, choices=utils.AGE_GROUPS, default="adult")
