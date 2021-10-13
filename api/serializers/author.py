@@ -1,9 +1,9 @@
-from rest_framework_json_api.serializers import ModelSerializer
+from rest_framework import serializers
 
 from api.models import Author
 
 
-class AuthorSerializer(ModelSerializer):
+class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = "__all__"
