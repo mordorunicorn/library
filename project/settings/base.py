@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'django_nose',
     'api',
 ]
 
@@ -137,5 +136,3 @@ REST_FRAMEWORK = {
 
 JSON_API_FORMAT_TYPES = 'dasherize'
 JSON_API_PLURALIZE_TYPES = True
-
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

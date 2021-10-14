@@ -1,5 +1,4 @@
 -r base.txt
 
-django-nose>=1.4.5,<1.5
 flake8
 jpprint
