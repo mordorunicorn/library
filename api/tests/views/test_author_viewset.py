@@ -9,7 +9,34 @@ class AuthorViewSetTests(TestCase):
     def setUp(self):
         self.author = Author.objects.create(first_name='Lucy Maude', last_name='Montgomery')
 
-    def test_can_create_an_author(self):
+    def test_can_list_all_authors(self):
+        author = Author.objects.create(first_name='Neil', last_name='Gaiman')
+        response = self.client.get(self.url)
+        expected = [
+            {
+                'id': self.author.pk,
+                'first_name': self.author.first_name,
+                'last_name': self.author.last_name,
+            },
+            {
+                'id': author.pk,
+                'first_name': author.first_name,
+                'last_name': author.last_name,
+            },
+        ]
+        self.assertCountEqual(expected, response.json())
+
+    def test_can_get_an_author(self):
+        data = {
+            'id': self.author.pk,
+            'first_name': 'Lucy Maude',
+            'last_name': 'Montgomery',
+        }
+        response = self.client.get(f'{self.url}{self.author.pk}/')
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(data, response.json())
+
+    def test_can_create_a_specific_author(self):
         data = {
             'first_name': 'C.S.',
             'last_name': 'Lewis',
@@ -33,16 +60,6 @@ class AuthorViewSetTests(TestCase):
         response = self.client.post(self.url, data, 'application/json')
         self.assertEqual(400, response.status_code)
         self.assertEqual({'last_name': ['This field is required.']}, response.json())
-
-    def test_can_get_an_author(self):
-        data = {
-            'id': self.author.pk,
-            'first_name': 'Lucy Maude',
-            'last_name': 'Montgomery',
-        }
-        response = self.client.get(f'{self.url}{self.author.pk}/')
-        self.assertEqual(200, response.status_code)
-        self.assertEqual(data, response.json())
 
     def test_can_edit_an_author(self):
         data = {
