@@ -7,60 +7,132 @@ class BookViewSetTests(TestCase):
     url = '/api/books/'
 
     def setUp(self):
+        self.gaiman = Author.objects.create(first_name='Neil', last_name='Gaiman')
+        self.pratchett = Author.objects.create(first_name='Terry', last_name='Pratchett')
+        self.book_one = Book.objects.create(title='Good Omens', year=1990, genre='fantasy', read=True)
+        self.book_one.authors.set([self.gaiman, self.pratchett])
+
         self.tolkien = Author.objects.create(first_name='J.R.R.', last_name='Tolkien')
         self.series = Series.objects.create(name='The Lord of the Rings')
+        self.book_two = Book.objects.create(
+            title='The Two Towers',
+            year=1954,
+            genre='fantasy',
+            series=self.series,
+            series_num=2,
+        )
+        self.book_two.authors.add(self.tolkien)
+
         self.stoker = Author.objects.create(first_name='Bram', last_name='Stoker')
-        self.book = Book.objects.create(title='Dracula', year=1897, genre='horror')
-        self.book.authors.set([self.stoker])
-        self.book.save()
+        self.book_three = Book.objects.create(title='Dracula', year=1897, genre='horror')
+        self.book_three.authors.add(self.stoker)
 
     def test_can_list_all_books(self):
-        series = Series.objects.create(name='Twisted Tales')
-        book = Book.objects.create(title='Go the Distance', year=2021, genre='fantasy', series=series)
         response = self.client.get(self.url)
         self.assertEqual(200, response.status_code)
         expected = [
             {
-                'id': self.book.pk,
-                'title': self.book.title,
-                'series_num': self.book.series_num,
-                'year': self.book.year,
-                'genre': self.book.genre,
-                'age_group': self.book.age_group,
-                'cover_url': self.book.cover_url,
-                'series': self.book.series,
-                'authors': [self.stoker.pk],
-                'read': self.book.read,
+                'id': self.book_one.pk,
+                'title': self.book_one.title,
+                'series_num': None,
+                'year': self.book_one.year,
+                'genre': self.book_one.genre,
+                'age_group': self.book_one.age_group,
+                'cover_url': self.book_one.cover_url,
+                'series': None,
+                'authors': [self.gaiman.pk, self.pratchett.pk],
+                'read': self.book_one.read,
             },
             {
-                'id': book.pk,
-                'title': book.title,
+                'id': self.book_two.pk,
+                'title': self.book_two.title,
+                'series_num': self.book_two.series_num,
+                'year': self.book_two.year,
+                'genre': self.book_two.genre,
+                'age_group': self.book_two.age_group,
+                'cover_url': self.book_two.cover_url,
+                'series': self.book_two.series.pk,
+                'authors': [self.tolkien.pk],
+                'read': self.book_two.read,
+            },
+            {
+                'id': self.book_three.pk,
+                'title': self.book_three.title,
                 'series_num': None,
-                'year': book.year,
-                'genre': book.genre,
-                'age_group': book.age_group,
-                'cover_url': book.cover_url,
-                'series': book.series.pk,
-                'authors': [],
-                'read': book.read,
+                'year': self.book_three.year,
+                'genre': self.book_three.genre,
+                'age_group': self.book_three.age_group,
+                'cover_url': self.book_three.cover_url,
+                'series': None,
+                'authors': [self.stoker.pk],
+                'read': self.book_three.read,
             },
         ]
         self.assertCountEqual(expected, response.json())
 
+    def test_can_filter_books_by_author(self):
+        response = self.client.get(self.url, data={'author_id': self.gaiman.pk})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]['id'], self.book_one.pk)
+        response = self.client.get(self.url, data={'author_id': self.stoker.pk})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]['id'], self.book_three.pk)
+
+    def test_can_filter_books_by_genre(self):
+        response = self.client.get(self.url, data={'genre': 'fantasy'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+        self.assertCountEqual([b['id'] for b in response.json()], [self.book_one.pk, self.book_two.pk])
+        response = self.client.get(self.url, data={'genre': 'horror'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]['id'], self.book_three.pk)
+
+    def test_can_filter_books_by_age_group(self):
+        self.book_two.age_group = 'young-adult'
+        self.book_two.save()
+
+        response = self.client.get(self.url, data={'age_group': 'adult'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+        self.assertCountEqual([b['id'] for b in response.json()], [self.book_one.pk, self.book_three.pk])
+        response = self.client.get(self.url, data={'age_group': 'young-adult'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]['id'], self.book_two.pk)
+
+    def test_can_filter_books_by_read(self):
+        response = self.client.get(self.url, data={'read': False})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+        self.assertCountEqual([b['id'] for b in response.json()], [self.book_two.pk, self.book_three.pk])
+        response = self.client.get(self.url, data={'read': True})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]['id'], self.book_one.pk)
+
+    def test_can_filter_books_by_series_id(self):
+        response = self.client.get(self.url, data={'series_id': self.series.pk})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]['id'], self.book_two.pk)
+
     def test_can_get_a_specific_book(self):
-        response = self.client.get(f'{self.url}{self.book.pk}/')
+        response = self.client.get(f'{self.url}{self.book_one.pk}/')
         self.assertEqual(200, response.status_code)
         expected = {
-            'id': self.book.pk,
-            'title': 'Dracula',
-            'year': 1897,
-            'genre': 'horror',
-            'read': False,
+            'id': self.book_one.pk,
+            'title': self.book_one.title,
             'series_num': None,
-            'age_group': 'adult',
-            'cover_url': None,
-            'authors': [self.stoker.pk],
+            'year': self.book_one.year,
+            'genre': self.book_one.genre,
+            'age_group': self.book_one.age_group,
+            'cover_url': self.book_one.cover_url,
             'series': None,
+            'authors': [self.gaiman.pk, self.pratchett.pk],
+            'read': self.book_one.read,
         }
         self.assertEqual(expected, response.json())
 
@@ -100,7 +172,7 @@ class BookViewSetTests(TestCase):
 
     def test_can_edit_a_book(self):
         data = {
-            'id': self.book.pk,
+            'id': self.book_three.pk,
             'title': 'Dracula',
             'year': 1999,
             'genre': 'horror',
@@ -111,17 +183,17 @@ class BookViewSetTests(TestCase):
             'authors': [self.stoker.pk],
             'series': None,
         }
-        response = self.client.patch(f'{self.url}{self.book.pk}/', data, 'application/json')
+        response = self.client.patch(f'{self.url}{self.book_three.pk}/', data, 'application/json')
         self.assertEqual(200, response.status_code)
-        self.book.refresh_from_db()
-        self.assertEqual(1999, self.book.year)
+        self.book_three.refresh_from_db()
+        self.assertEqual(1999, self.book_three.year)
 
     def test_can_partial_edit_a_book(self):
         data = {
-            'id': self.book.pk,
+            'id': self.book_one.pk,
             'read': True,
         }
-        response = self.client.patch(f'{self.url}{self.book.pk}/', data, 'application/json')
+        response = self.client.patch(f'{self.url}{self.book_one.pk}/', data, 'application/json')
         self.assertEqual(200, response.status_code)
-        self.book.refresh_from_db()
-        self.assertTrue(self.book.read)
+        self.book_one.refresh_from_db()
+        self.assertTrue(self.book_one.read)
