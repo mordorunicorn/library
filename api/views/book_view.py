@@ -2,6 +2,7 @@ from django_filters import rest_framework as filters
 from rest_framework import viewsets
 
 from api.models import Book
+from api.permissions import CanPerformWriteAction
 from api.serializers import BookSerializer
 
 
@@ -18,6 +19,7 @@ class BookFilter(filters.FilterSet):
 
 class BookViewSet(viewsets.ModelViewSet):
 
+    filterset_class = BookFilter
+    permission_classes = [CanPerformWriteAction]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filterset_class = BookFilter
