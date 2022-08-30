@@ -11,7 +11,7 @@ class Book(models.Model):
         "Series", related_name="books", on_delete=models.SET_NULL, null=True, blank=True
     )
     series_num = models.IntegerField(null=True, blank=True)
-    genre = models.CharField(max_length=50, choices=utils.GENRES, default="fiction")
+    genre = models.ForeignKey("Genre", related_name="books", on_delete=models.DO_NOTHING)
     age_group = models.CharField(max_length=50, choices=utils.AGE_GROUPS, default="adult")
     read = models.BooleanField(default=False)
     cover_url = models.URLField(blank=True, null=True)

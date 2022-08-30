@@ -1,7 +1,5 @@
 from django.db import models
 
-from api import utils
-
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100, null=True, blank=True)
