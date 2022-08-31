@@ -4,17 +4,17 @@ from api import utils
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=255)
+    age_group = models.CharField(max_length=50, choices=utils.AGE_GROUPS, default="adult")
     authors = models.ManyToManyField("Author", related_name="books")
-    year = models.IntegerField()
+    cover_url = models.URLField(blank=True, null=True)
+    read = models.BooleanField(default=False)
     series = models.ForeignKey(
         "Series", related_name="books", on_delete=models.SET_NULL, null=True, blank=True
     )
     series_num = models.IntegerField(null=True, blank=True)
-    genre = models.ForeignKey("Genre", related_name="books", on_delete=models.DO_NOTHING)
-    age_group = models.CharField(max_length=50, choices=utils.AGE_GROUPS, default="adult")
-    read = models.BooleanField(default=False)
-    cover_url = models.URLField(blank=True, null=True)
+    subgenre = models.ForeignKey("Subgenre", related_name="books", on_delete=models.DO_NOTHING)
+    title = models.CharField(max_length=255)
+    year = models.IntegerField()
 
     @property
     def author_display(self):

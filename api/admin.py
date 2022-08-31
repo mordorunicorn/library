@@ -11,7 +11,7 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(models.Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "author_display", "series")
-    list_filter = ("read", "genre", "age_group")
+    list_filter = ("read", "subgenre", "age_group")
     search_fields = ("title",)
 
 
