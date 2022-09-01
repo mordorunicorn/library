@@ -1,16 +1,17 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from api.models import Author, Book, Genre, Series, Subgenre
+from api.models import Author, Book, Genre, Series, Subgenre, Tag
 
 
 class BookViewSetTests(TestCase):
     url = '/api/books/'
 
     def setUp(self):
-        self.fantasy = Genre.objects.create(name="Fantasy")
-        self.high_fantasy = Subgenre.objects.create(genre=self.fantasy, name="High")
-        self.urban_fantasy = Subgenre.objects.create(genre=self.fantasy, name="Urban")
+        self.favorites = Tag.objects.create(name='favorites')
+        self.fantasy = Genre.objects.create(name='Fantasy')
+        self.high_fantasy = Subgenre.objects.create(genre=self.fantasy, name='High')
+        self.urban_fantasy = Subgenre.objects.create(genre=self.fantasy, name='Urban')
 
         self.gaiman = Author.objects.create(first_name='Neil', last_name='Gaiman')
         self.pratchett = Author.objects.create(first_name='Terry', last_name='Pratchett')
@@ -32,9 +33,10 @@ class BookViewSetTests(TestCase):
             subgenre=self.high_fantasy,
         )
         self.book_two.authors.add(self.tolkien)
+        self.book_two.tags.add(self.favorites)
 
-        self.horror = Genre.objects.create(name="Horror")
-        self.paranormal = Subgenre.objects.create(genre=self.horror, name="Paranormal")
+        self.horror = Genre.objects.create(name='Horror')
+        self.paranormal = Subgenre.objects.create(genre=self.horror, name='Paranormal')
 
         self.stoker = Author.objects.create(first_name='Bram', last_name='Stoker')
         self.book_three = Book.objects.create(
@@ -43,6 +45,7 @@ class BookViewSetTests(TestCase):
             subgenre=self.paranormal,
         )
         self.book_three.authors.add(self.stoker)
+        self.book_three.tags.add(self.favorites)
 
     def test_can_list_all_books(self):
         response = self.client.get(self.url)
@@ -76,6 +79,7 @@ class BookViewSetTests(TestCase):
                     },
                     'name': self.urban_fantasy.name,
                 },
+                'tags': [],
                 'title': self.book_one.title,
                 'year': self.book_one.year,
             },
@@ -105,6 +109,12 @@ class BookViewSetTests(TestCase):
                     },
                     'name': self.high_fantasy.name,
                 },
+                'tags': [
+                    {
+                        'id': self.favorites.pk,
+                        'name': self.favorites.name,
+                    },
+                ],
                 'title': self.book_two.title,
                 'year': self.book_two.year,
             },
@@ -132,9 +142,16 @@ class BookViewSetTests(TestCase):
                     'name': self.paranormal.name,
                 },
                 'title': self.book_three.title,
+                'tags': [
+                    {
+                        'id': self.favorites.pk,
+                        'name': self.favorites.name,
+                    },
+                ],
                 'year': self.book_three.year,
             },
         ]
+        self.maxDiff = None
         self.assertCountEqual(expected, response.json())
 
     def test_can_filter_books_by_author(self):
@@ -217,6 +234,7 @@ class BookViewSetTests(TestCase):
                 },
                 'name': self.urban_fantasy.name,
             },
+            'tags': [],
             'title': self.book_one.title,
             'year': self.book_one.year,
         }
