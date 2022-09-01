@@ -51,6 +51,7 @@ class BookViewSetTests(TestCase):
             {
                 'id': self.book_one.pk,
                 'age_group': self.book_one.age_group,
+                'audiobook': False,
                 'authors': [
                     {
                         'id': self.gaiman.pk,
@@ -81,6 +82,7 @@ class BookViewSetTests(TestCase):
             {
                 'id': self.book_two.pk,
                 'age_group': self.book_two.age_group,
+                'audiobook': False,
                 'authors': [
                     {
                         'id': self.tolkien.pk,
@@ -109,6 +111,7 @@ class BookViewSetTests(TestCase):
             {
                 'id': self.book_three.pk,
                 'age_group': self.book_three.age_group,
+                'audiobook': False,
                 'authors': [
                     {
                         'id': self.stoker.pk,
@@ -189,6 +192,7 @@ class BookViewSetTests(TestCase):
         expected = {
             'id': self.book_one.pk,
             'age_group': self.book_one.age_group,
+            'audiobook': False,
             'authors': [
                 {
                     'id': self.gaiman.pk,
