@@ -21,11 +21,14 @@ class BookAdmin(admin.ModelAdmin):
         "series_num",
         "subgenre",
         "age_group",
+        "audiobook",
         "read",
         "cover_url",
+        "tags",
     )
 
 
 admin.site.register(models.Genre)
 admin.site.register(models.Subgenre)
 admin.site.register(models.Series)
+admin.site.register(models.Tag)

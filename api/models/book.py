@@ -5,6 +5,7 @@ from api import utils
 
 class Book(models.Model):
     age_group = models.CharField(max_length=50, choices=utils.AGE_GROUPS, default='adult')
+    audiobook = models.BooleanField(default=False)
     authors = models.ManyToManyField('Author', related_name='books')
     cover_url = models.URLField(blank=True, null=True)
     read = models.BooleanField(default=False)
@@ -14,6 +15,7 @@ class Book(models.Model):
     series_num = models.IntegerField(null=True, blank=True)
     subgenre = models.ForeignKey('Subgenre', related_name='books', on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=255)
+    tags = models.ManyToManyField('Tag', related_name='books')
     year = models.IntegerField()
 
     @property
