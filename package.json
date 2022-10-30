@@ -1,6 +1,7 @@
 {
   "name": "react-books",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.4.3",
@@ -30,5 +31,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "14.6.0",
+    "npm": "6.14.9"
   }
 }
