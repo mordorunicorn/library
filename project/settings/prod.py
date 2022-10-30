@@ -20,7 +20,7 @@ DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 ALLOWED_HOSTS = [
-    'jessicas-libary.herokuapp.com',
+    'jessicas-library.herokuapp.com',
     '127.0.0.1:8000',
     'localhost',
 ]
