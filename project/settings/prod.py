@@ -3,11 +3,8 @@ import dotenv
 import dj_database_url
 import os
 from .base import *  # noqa: F401, F403
-from . import settings_secrets
 
 ENV = 'prod'
-
-SECRET_KEY = settings_secrets.SECRET_KEY
 
 DEBUG = False
 
@@ -23,7 +20,7 @@ DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 ALLOWED_HOSTS = [
-    'jessicas-libary.herokuapp.com',
+    'jessicas-library.herokuapp.com',
     '127.0.0.1:8000',
     'localhost',
 ]
