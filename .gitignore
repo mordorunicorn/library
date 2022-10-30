@@ -1,4 +1,5 @@
-venv/
+libraryenv/
 *.pyc
 db.sqlite3
 .python-version
+node_modules
