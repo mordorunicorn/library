@@ -24,3 +24,9 @@ ALLOWED_HOSTS = [
     '127.0.0.1:8000',
     'localhost',
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'jessicas-library.herokuapp.com',
+    '127.0.0.1:8000',
+    'localhost',
+]
