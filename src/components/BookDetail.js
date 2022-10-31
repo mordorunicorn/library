@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
@@ -22,8 +23,8 @@ const BookDetail = (props) => {
   const [book, setBook] = React.useState({});
 
   const fetchBook = async (book_id) => {
-    let response = await fetch(`http://localhost:8000/api/books/${book_id}/`);
-    let json = await response.json();
+    let response = await axios.get(`/api/books/${book_id}/`);
+    let json = await response.data;
     return { success: true, data: json};
   }
 

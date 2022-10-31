@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import { HashRouter, Route } from 'react-router-dom';
 
@@ -7,6 +8,9 @@ import Books from './components/Books';
 import BookDetail from './components/BookDetail';
 import Authors from './components/Authors';
 import AuthorDetail from './components/AuthorDetail';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const useStyles = makeStyles(() => ({
   root: {
