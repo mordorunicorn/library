@@ -6,7 +6,7 @@ from .base import *  # noqa: F401, F403
 
 ENV = 'prod'
 
-DEBUG = True
+DEBUG = False
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
