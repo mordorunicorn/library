@@ -20,7 +20,7 @@ class Book(models.Model):
 
     @property
     def author_display(self):
-        return ','.join(a.display_name for a in self.authors.all())
+        return ', '.join(a.display_name for a in self.authors.all())
 
     def __repr__(self):
         return f'{self.title} - {self.author_display}'

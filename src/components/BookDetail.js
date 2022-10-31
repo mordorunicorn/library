@@ -59,7 +59,9 @@ const BookDetail = (props) => {
             <Grid item xs={6}>
               <p>
                 <strong>Genre: </strong>
-                {book.genre}
+                {book.subgenre && (
+                  `${book.subgenre.genre.name} > ${book.subgenre.name}`
+                )}
               </p>
               {book.read || <p>[Unread]</p>}
             </Grid>
