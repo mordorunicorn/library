@@ -14,8 +14,6 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
-django_heroku.settings(locals())
-
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
@@ -31,3 +29,8 @@ CORS_ORIGIN_WHITELIST = [
     '127.0.0.1:8000',
     'localhost',
 ]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+django_heroku.settings(locals())
