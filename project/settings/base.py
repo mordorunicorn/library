@@ -53,7 +53,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'project.urls'
-print(">>>>>", os.path.join(BASE_DIR, 'build'))
 
 TEMPLATES = [
     {
@@ -125,9 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
-print(">>>>>>>", os.path.join(BASE_DIR, 'build/static'))
-print(">>>>>>>", os.path.join(os.path.dirname(BASE_DIR), 'build/static'))
+STATICFILES_DIRS = [os.path.join(os.path.dirname(BASE_DIR), 'build/static')]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
