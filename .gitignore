@@ -4,3 +4,4 @@ project/staticfiles/
 db.sqlite3
 .python-version
 node_modules
+build

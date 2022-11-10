@@ -151,3 +151,24 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
 CORS_ALLOW_CREDENTIALS = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'WARN',
+            'class': 'logging.FileHandler',
+            'filename': 'log.django',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'WARN'),
+        },
+    },
+}
