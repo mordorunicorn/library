@@ -53,6 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'project.urls'
+print(">>>>>", os.path.join(os.path.dirname(BASE_DIR), 'build'))
 
 TEMPLATES = [
     {
