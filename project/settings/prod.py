@@ -4,6 +4,8 @@ import dj_database_url
 import os
 from .base import *  # noqa: F401, F403
 
+django_heroku.settings(locals())
+
 ENV = 'prod'
 
 DEBUG = False
@@ -34,4 +36,7 @@ CORS_ORIGIN_WHITELIST = [
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-django_heroku.settings(locals())
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'build', 'build', 'static')
+STATICFILES_DIRS = []
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
