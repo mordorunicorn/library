@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -98,8 +99,8 @@ const Books = () => {
   const [onlyCovers, setOnlyCovers] = React.useState(true);
 
   const fetchBookList = async () => {
-    let response = await fetch('http://localhost:8000/api/books/');
-    let json = await response.json();
+    let response = await axios.get('/api/books/');
+    let json = await response.data;;
     return { success: true, data: json};
   }
 
