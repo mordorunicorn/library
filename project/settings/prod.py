@@ -1,10 +1,7 @@
-import django_heroku
 import dotenv
 import dj_database_url
 import os
 from .base import *  # noqa: F401, F403
-
-django_heroku.settings(locals())
 
 ENV = 'prod'
 
@@ -38,7 +35,10 @@ CSRF_COOKIE_SECURE = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'build', 'static')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'staticfiles'),
+    os.path.join(BASE_DIR, 'staticfiles', 'admin'),
+]
 
 LOGGING = {
     'version': 1,
