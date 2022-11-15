@@ -30,7 +30,7 @@ CORS_ORIGIN_WHITELIST = [
     'localhost',
 ]
 
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 STATIC_URL = '/static/'
