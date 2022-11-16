@@ -12,15 +12,17 @@ if __name__ == '__main__':
         ('__init__', '__pycache__')
     )
 
-    # if sys.argv[1] not in settings_files:
-    #     raise Exception(f'Second argument must be a valid settings. {settings_files}')
-
-    if os.environ.get('DJANGO_ENV') is None:
-        os.environ['DJANGO_ENV'] = 'prod'
+    settings_file = 'prod'
 
     if sys.argv[1] in settings_files:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings.{}'.format(sys.argv[1]))
+        settings_file = sys.argv[1]
+
+    if os.environ.get('DJANGO_ENV') is None:
+        os.environ['DJANGO_ENV'] = settings_file
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings.{}'.format(settings_file))
+
+    if sys.argv[1] in settings_files:
         execute_from_command_line([sys.argv[0]] + sys.argv[2:])
     else:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings.prod')
         execute_from_command_line(sys.argv)
