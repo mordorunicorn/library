@@ -1,10 +1,7 @@
-import django_heroku
 import dotenv
 import dj_database_url
 import os
 from .base import *  # noqa: F401, F403
-
-django_heroku.settings(locals())
 
 ENV = 'prod'
 
@@ -33,12 +30,11 @@ CORS_ORIGIN_WHITELIST = [
     'localhost',
 ]
 
-SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'build', 'static')
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [os.path.join(os.path.dirname(BASE_DIR), 'build/static')]
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGGING = {
