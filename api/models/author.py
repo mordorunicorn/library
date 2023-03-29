@@ -16,4 +16,5 @@ class Author(models.Model):
         return self.display_name
 
     class Meta:
+        unique_together = ('first_name', 'last_name')
         ordering = ['last_name', 'first_name']
