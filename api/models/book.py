@@ -29,4 +29,5 @@ class Book(models.Model):
         return f'{self.title} - {self.author_display}'
 
     class Meta:
+        unique_together = ('title', 'year')
         ordering = ['title']
