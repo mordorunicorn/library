@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 const useStyles = makeStyles(() => ({
   bookCover: {
     maxHeight: '150px',
+    maxWidth: '100%',
     borderRadius: '5px',
   },
   imgContainer: {
