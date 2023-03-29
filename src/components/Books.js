@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
   },
   bookCover: {
     maxHeight: '150px',
+    maxWidth: '100%',
   },
   imgContainer: {
     display: 'flex',
