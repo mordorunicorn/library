@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 
 from api import utils
@@ -21,6 +23,18 @@ class Book(models.Model):
     @property
     def author_display(self):
         return ', '.join(a.display_name for a in self.authors.all())
+
+    @property
+    def display_title(self):
+        title = self.title.lower()
+        prefixes = ('the ', 'an ', 'a ')
+        matcher = re.compile('|'.join(map(re.escape, prefixes))).match
+        prefix = matcher(title)
+        return (
+            "{}, {}".format(title[len(prefix.group()) :], prefix.group().strip())
+            if prefix is not None
+            else title
+        )
 
     def __repr__(self):
         return f'{self.title} - {self.author_display}'
