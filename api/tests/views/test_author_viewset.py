@@ -68,6 +68,7 @@ class AuthorViewSetTests(TestCase):
 
     def test_can_create_author_without_first_name(self):
         data = {
+            'first_name': '',
             'last_name': 'Homer',
         }
         response = self.client.post(self.url, data, 'application/json')
