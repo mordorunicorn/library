@@ -10,5 +10,6 @@ router.register('series', views.SeriesViewSet)
 
 
 urlpatterns = [
+    path('stats/', views.StatsView.as_view()),
     path('', include(router.urls)),
 ]

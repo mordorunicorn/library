@@ -36,6 +36,17 @@ class Book(models.Model):
             else title
         )
 
+    @property
+    def is_reading_challenge_eligible(self):
+        return (
+            self.age_group in ('young-adult', 'adult')
+            and not any(['aticus' in tag.name for tag in self.tags.all()])
+        ) or (
+            self.age_group != 'children'
+            and self.series
+            and any([book.read for book in self.series.books.all()])
+        )
+
     def __repr__(self):
         return f'{self.title} - {self.author_display}'
 

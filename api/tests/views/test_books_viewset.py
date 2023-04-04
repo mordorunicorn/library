@@ -154,7 +154,6 @@ class BookViewSetTests(TestCase):
                 'year': self.book_three.year,
             },
         ]
-        self.maxDiff = None
         self.assertCountEqual(expected, response.json())
 
     def test_can_filter_books_by_author(self):
