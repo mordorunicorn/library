@@ -57,7 +57,7 @@ function CircularProgressWithLabel(props) {
           justifyContent: 'center',
         }}
       >
-        <Typography variant="h5" component="div" color="text.secondary" style={{ fontFamily: "acme" }}>
+        <Typography variant="h5" component="div" style={{ fontFamily: "acme" }}>
           {`${Math.round(props.value)}%`}
         </Typography>
       </Box>
