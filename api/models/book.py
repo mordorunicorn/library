@@ -43,8 +43,7 @@ class Book(models.Model):
             and not any(['aticus' in tag.name for tag in self.tags.all()])
         ) or (
             self.age_group != 'children'
-            and self.series
-            and any([book.read for book in self.series.books.all()])
+            and ((self.series and any([book.read for book in self.series.books.all()])) or self.read)
         )
 
     def __repr__(self):
