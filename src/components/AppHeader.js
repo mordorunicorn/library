@@ -29,7 +29,6 @@ const useStyles = makeStyles(() => ({
     fontSize: '1rem',
     boxSizing: 'border-box',
     minHeight: '48px',
-    fontFamily: "Acme",
     fontWeight: '400',
     lineHeight: '1.5',
     paddingTop: '6px',

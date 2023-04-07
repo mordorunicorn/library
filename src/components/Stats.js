@@ -35,7 +35,6 @@ const useStyles = makeStyles(() => ({
     boxShadow: 'none',
   },
   title: {
-    fontFamily: 'acme',
     marginTop: '0.35em',
     marginLeft: '5%',
   },
@@ -57,7 +56,7 @@ function CircularProgressWithLabel(props) {
           justifyContent: 'center',
         }}
       >
-        <Typography variant="h5" component="div" style={{ fontFamily: "acme" }}>
+        <Typography variant="h5" component="div">
           {`${Math.round(props.value)}%`}
         </Typography>
       </Box>

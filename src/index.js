@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import '@fontsource/acme/400.css';
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
