@@ -68,6 +68,7 @@ class BookViewSetTests(TestCase):
                     },
                 ],
                 'cover_url': self.book_one.cover_url,
+                'display_title': self.book_one.display_title,
                 'read': self.book_one.read,
                 'series': None,
                 'series_num': None,
@@ -95,6 +96,7 @@ class BookViewSetTests(TestCase):
                     },
                 ],
                 'cover_url': self.book_two.cover_url,
+                'display_title': self.book_two.display_title,
                 'read': self.book_two.read,
                 'series': {
                     'id': self.book_two.series.pk,
@@ -130,6 +132,7 @@ class BookViewSetTests(TestCase):
                     },
                 ],
                 'cover_url': self.book_three.cover_url,
+                'display_title': self.book_three.display_title,
                 'read': self.book_three.read,
                 'series': None,
                 'series_num': None,
@@ -151,7 +154,6 @@ class BookViewSetTests(TestCase):
                 'year': self.book_three.year,
             },
         ]
-        self.maxDiff = None
         self.assertCountEqual(expected, response.json())
 
     def test_can_filter_books_by_author(self):
@@ -223,6 +225,7 @@ class BookViewSetTests(TestCase):
                 },
             ],
             'cover_url': self.book_one.cover_url,
+            'display_title': self.book_one.display_title,
             'read': self.book_one.read,
             'series': None,
             'series_num': None,

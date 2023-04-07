@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
 
 const sortBooks = (bookList) => {
   return bookList.sort((bookA, bookB) => {
-    return bookA.title.toLowerCase() > bookB.title.toLowerCase() ? 1 : -1;
+    return bookA.display_title.toLowerCase() > bookB.display_title.toLowerCase() ? 1 : -1;
   });
 };
 
