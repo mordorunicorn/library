@@ -1188,6 +1188,11 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fontsource/acme@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@fontsource/acme/-/acme-4.5.10.tgz#c9e1199ca90df28be9fbe2cd3b71198568aeb816"
+  integrity sha512-yGt8yeaUGgjbuRei+dRE4hO7E1nxXxXk9cBJv6wFMzIqCxUhfkidS+WNRpd40HUROtLbX1t7KJp5SCfcMjfKRA==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.9.5.tgz"
