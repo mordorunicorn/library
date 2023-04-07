@@ -60,13 +60,12 @@ class SeriesViewSetTests(TestCase):
         }
         self.assertEqual(expected, response.json())
 
-    def test_read_status_does_not_inclue_childrens_or_middle_grade_books(self):
+    def test_read_status_does_not_include_unread_childrens_or_middle_grade_books(self):
         models.Book.objects.create(
             title='Roverandom',
             year=1998,
             subgenre=self.high_fantasy,
             age_group='middle-grade',
-            read=True,
         )
 
         picture_book = models.Genre.objects.create(name='Picture Book')
@@ -85,13 +84,12 @@ class SeriesViewSetTests(TestCase):
         }
         self.assertEqual(expected, response.json()['books_by_read_status'])
 
-    def test_read_status_does_not_inclue_aticus_tags(self):
+    def test_read_status_does_not_include_unread_aticus_tags(self):
         one_piece = models.Book.objects.create(
             title='One Piece Vol. 1',
             year=1997,
             subgenre=self.high_fantasy,
             age_group='adult',
-            read=True,
         )
         one_piece.tags.add(models.Tag.objects.create(name='aticus-picks'))
 
@@ -151,5 +149,31 @@ class SeriesViewSetTests(TestCase):
         expected = {
             'read': 3,
             'unread': 4,
+        }
+        self.assertEqual(expected, response.json()['books_by_read_status'])
+
+    def test_includes_middle_grade_and_aticus_books_if_standalone_and_read(self):
+        soul_drinker = models.Book.objects.create(
+            title='The Soul Drinker',
+            year=1989,
+            subgenre=self.high_fantasy,
+            age_group='adult',
+            read=True,
+        )
+        soul_drinker.tags.add(models.Tag.objects.create(name='aticus-picks'))
+
+        models.Book.objects.create(
+            title='The Wind Singer',
+            year=2000,
+            subgenre=self.high_fantasy,
+            age_group='middle-grade',
+            read=True,
+        )
+
+        response = self.client.get(self.url)
+        self.assertEqual(200, response.status_code)
+        expected = {
+            'read': 3,
+            'unread': 2,
         }
         self.assertEqual(expected, response.json()['books_by_read_status'])
