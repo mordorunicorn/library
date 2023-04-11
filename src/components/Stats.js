@@ -16,15 +16,6 @@ const useStyles = makeStyles(() => ({
     height: '100%',
     color: '#000000',
   },
-  loadingBox: {
-    backgroundColor: '#f6f6f6',
-    width: '100%',
-    height: '100%',
-    color: '#000000',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   graphBox: {
     backgroundColor: '#f6f6f6',
     width: '100%',
@@ -33,6 +24,15 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: 'none',
+  },
+  loadingBox: {
+    backgroundColor: '#f6f6f6',
+    width: '100%',
+    height: '100%',
+    color: '#000000',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     marginTop: '0.35em',
