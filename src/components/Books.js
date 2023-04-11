@@ -3,6 +3,7 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
+  CircularProgress,
   FormControlLabel,
   Grid,
   Hidden,
@@ -22,6 +23,15 @@ const useStyles = makeStyles(() => ({
     maxWidth: '100%',
   },
   imgContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingBox: {
+    backgroundColor: '#f6f6f6',
+    width: '100%',
+    height: '100%',
+    color: '#000000',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -95,7 +105,9 @@ const BookDetail = ({ book }) => {
 };
 
 const Books = () => {
+  const classes = useStyles();
   const [books, setBooks] = React.useState([]);
+  const [booksLoaded, setBooksLoaded] = React.useState(false);
   const [filteredBooks, setFilteredBooks] = React.useState(sortBooks(books));
   const [onlyCovers, setOnlyCovers] = React.useState(true);
 
@@ -110,6 +122,7 @@ const Books = () => {
       let bookResponse = await fetchBookList();
       if (bookResponse.success) {
         setBooks(bookResponse.data);
+        setBooksLoaded(true);
         setFilteredBooks(sortBooks(bookResponse.data))
       }
     })()
@@ -135,49 +148,56 @@ const Books = () => {
 
   return (
     <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
-      <Grid container item xs={12}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Search"
-            onChange={search}
-            margin="normal"
-            variant="outlined"
-            style={{ width: '100%' }}
-          />
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          style={{
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <Hidden only={['xs', 'sm']}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={onlyCovers}
-                  onChange={handleCoverChange}
-                  color="primary"
-                  name="onlyCovers"
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
+      {!booksLoaded ?
+        <Card className={classes.loadingBox}>
+          <CircularProgress />
+        </Card> :
+        <>
+          <Grid container item xs={12}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Search"
+                onChange={search}
+                margin="normal"
+                variant="outlined"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              style={{
+                textAlign: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Hidden only={['xs', 'sm']}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={onlyCovers}
+                      onChange={handleCoverChange}
+                      color="primary"
+                      name="onlyCovers"
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />
+                  }
+                  label="Show Covers Only"
                 />
-              }
-              label="Show Covers Only"
-            />
-          </Hidden>
-        </Grid>
-      </Grid>
-      {filteredBooks.map((book) =>
-        onlyCovers ? (
-          <BookCover key={book.id} book={book} />
-        ) : (
-          <BookDetail key={book.id} book={book} />
-        )
-      )}
+              </Hidden>
+            </Grid>
+          </Grid>
+          {filteredBooks.map((book) =>
+            onlyCovers ? (
+              <BookCover key={book.id} book={book} />
+            ) : (
+              <BookDetail key={book.id} book={book} />
+            )
+          )}
+        </>
+      }
     </Grid>
   );
 };
