@@ -53,7 +53,7 @@ const BookDetail = (props) => {
               {book.authors && (
                 <p>
                   <strong>Author: </strong>
-                  {book.authors.map(author => `${author.first_name}${author.first_name ? " " : ""}${author.last_name}`)}
+                  {book.authors.map(author => `${author.first_name}${author.first_name ? " " : ""}${author.last_name}`).join(", ")}
                 </p>
               )}
             </Grid>
