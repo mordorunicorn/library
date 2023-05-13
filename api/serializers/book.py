@@ -10,6 +10,7 @@ from api.serializers.tag import TagSerializer
 class BookSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True)
     display_title = serializers.CharField()
+    is_reading_challenge_eligible = serializers.BooleanField()
     series = SeriesSerializer(required=False)
     subgenre = SubgenreSerializer()
     tags = TagSerializer(many=True)
