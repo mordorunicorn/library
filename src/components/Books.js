@@ -110,6 +110,7 @@ const Books = () => {
   const [booksLoaded, setBooksLoaded] = React.useState(false);
   const [filteredBooks, setFilteredBooks] = React.useState(sortBooks(books));
   const [onlyCovers, setOnlyCovers] = React.useState(true);
+  const [showUnread, setShowUnread] = React.useState(false);
 
   const fetchBookList = async () => {
     let response = await axios.get('/api/books/');
@@ -130,6 +131,15 @@ const Books = () => {
 
   const handleCoverChange = (e) => {
     setOnlyCovers(e.target.checked);
+  };
+
+  const handleUnreadChange = (e) => {
+    setShowUnread(e.target.checked);
+    if (e.target.checked) {
+      setFilteredBooks(books.filter(book => book.is_reading_challenge_eligible && !book.read))
+    } else {
+      setFilteredBooks(books)
+    }
   };
 
   const search = (e) => {
@@ -166,7 +176,7 @@ const Books = () => {
             <Grid
               item
               xs={12}
-              sm={6}
+              sm={3}
               style={{
                 textAlign: 'center',
                 display: 'flex',
@@ -187,6 +197,29 @@ const Books = () => {
                   label="Show Covers Only"
                 />
               </Hidden>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={3}
+              style={{
+                textAlign: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showUnread}
+                    onChange={handleUnreadChange}
+                    color="primary"
+                    name="showUnread"
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                }
+                label="Show Unread Only"
+              />
             </Grid>
           </Grid>
           {filteredBooks.map((book) =>
