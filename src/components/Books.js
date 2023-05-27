@@ -109,6 +109,7 @@ const Books = () => {
   const [books, setBooks] = React.useState([]);
   const [booksLoaded, setBooksLoaded] = React.useState(false);
   const [filteredBooks, setFilteredBooks] = React.useState(sortBooks(books));
+  const [unreadBooks, setUnreadBooks] = React.useState([]);
   const [onlyCovers, setOnlyCovers] = React.useState(true);
   const [showUnread, setShowUnread] = React.useState(false);
 
@@ -122,9 +123,10 @@ const Books = () => {
     (async () => {
       let bookResponse = await fetchBookList();
       if (bookResponse.success) {
-        setBooks(bookResponse.data);
+        setBooks(sortBooks(bookResponse.data));
         setBooksLoaded(true);
         setFilteredBooks(sortBooks(bookResponse.data))
+        setUnreadBooks(sortBooks(bookResponse.data).filter(book => book.is_reading_challenge_eligible && !book.read))
       }
     })()
   }, []);
@@ -136,7 +138,7 @@ const Books = () => {
   const handleUnreadChange = (e) => {
     setShowUnread(e.target.checked);
     if (e.target.checked) {
-      setFilteredBooks(books.filter(book => book.is_reading_challenge_eligible && !book.read))
+      setFilteredBooks(filteredBooks.filter(book => book.is_reading_challenge_eligible && !book.read))
     } else {
       setFilteredBooks(books)
     }
@@ -144,15 +146,29 @@ const Books = () => {
 
   const search = (e) => {
     if (e.target.value) {
-      setFilteredBooks(
-        sortBooks(
-          books.filter((book) =>
-            book.title.toLowerCase().includes(e.target.value.toLowerCase())
+      if (showUnread) {
+        setFilteredBooks(
+          sortBooks(
+            unreadBooks.filter((book) =>
+              book.title.toLowerCase().includes(e.target.value.toLowerCase())
+            )
           )
-        )
-      );
+        );
+      } else {
+        setFilteredBooks(
+          sortBooks(
+            books.filter((book) =>
+              book.title.toLowerCase().includes(e.target.value.toLowerCase())
+            )
+          )
+        );
+      }
     } else {
-      setFilteredBooks(sortBooks(books));
+      if (showUnread) {
+        setFilteredBooks(sortBooks(unreadBooks));
+      } else {
+        setFilteredBooks(sortBooks(books));
+      }
     }
   };
 
