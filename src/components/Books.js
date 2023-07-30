@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import {
+  Badge,
   Card,
   CircularProgress,
   FormControlLabel,
@@ -47,13 +48,16 @@ const sortBooks = (bookList) => {
 const BookCover = ({ book }) => {
   const classes = useStyles();
   const defaultCover = 'https://cliparting.com/wp-content/uploads/2016/05/Book-clip-art-of-students-reading-clipart-2-image-8.png';
+  const showBadge = !book.read && book.is_reading_challenge_eligible;
 
   return (
     <Grid container item xs={4} sm={2} md={1}>
       <a href={'/#/books/' + book.id} style={{ textDecoration: 'none' }}>
-        <Grid item xs={12} className={classes.imgContainer}>
-          <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
-        </Grid>
+        <Badge badgeContent="unread" color="primary" invisible={ !showBadge }>
+          <Grid item xs={12} className={classes.imgContainer}>
+            <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+          </Grid>
+        </Badge>
       </a>
     </Grid>
   );
