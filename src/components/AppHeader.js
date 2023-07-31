@@ -44,6 +44,7 @@ const ITEM_HEIGHT = 48;
 const options = [
   // {label: 'Authors', url: '/#/authors/'},
   {label: 'Books', url: '/#/books/'},
+  {label: 'Series', url: '/#/series/'},
   {label: 'Statistics', url: '/#/stats/'},
 ];
 

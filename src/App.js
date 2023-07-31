@@ -8,6 +8,7 @@ import Books from './components/Books';
 import BookDetail from './components/BookDetail';
 import Authors from './components/Authors';
 import AuthorDetail from './components/AuthorDetail';
+import Series from './components/Series';
 import Stats from './components/Stats';
 
 axios.defaults.xsrfCookieName = 'csrftoken'
@@ -43,6 +44,7 @@ function App() {
           exact
           render={(props) => <AuthorDetail {...props} />}
         />
+        <Route path="/series" exact render={() => <Series />} />
         <Route path="/stats" exact render={() => <Stats />} />
       </HashRouter>
       <AppFooter />
