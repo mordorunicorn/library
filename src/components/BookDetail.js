@@ -40,7 +40,7 @@ const BookDetail = (props) => {
 
   return (
     <Grid container spacing={3} style={{ padding: '10px' }}>
-      <Card className={classes.bookBox}>
+      <Card>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3} className={classes.imgContainer}>
             <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />

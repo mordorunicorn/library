@@ -46,30 +46,32 @@ const SeriesDetail = ({ series }) => {
 
   return (
     <Grid item xs={4} sm={2} md={6} style={{ height: 250}}>
-      <Card className={classes.bookBox}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3} className={classes.imgContainer}>
-            <img src={series.books[0].cover_url || defaultCover} className={classes.bookCover} alt="" />
+      <a href={'/#/series/' + series.id} style={{ textDecoration: 'none' }}>
+        <Card className={classes.bookBox}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3} className={classes.imgContainer}>
+              <img src={series.books[0].cover_url || defaultCover} className={classes.bookCover} alt="" />
+            </Grid>
+            <Grid item container md={9}>
+              <Grid item xs={12}>
+                <h3>{series.name}</h3>
+              </Grid>
+              <Grid item xs={12}>
+                <p>
+                  <strong>Author: </strong>
+                  {series.authors.map(author => `${author.first_name}${author.first_name ? " " : ""}${author.last_name}`).join(", ")}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>Books: </strong>
+                  {series.books.length}
+                </p>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item container md={9}>
-            <Grid item xs={12}>
-              <h3>{series.name}</h3>
-            </Grid>
-            <Grid item xs={12}>
-              <p>
-                <strong>Author: </strong>
-                {series.authors.map(author => `${author.first_name}${author.first_name ? " " : ""}${author.last_name}`).join(", ")}
-              </p>
-            </Grid>
-            <Grid item xs={6}>
-              <p>
-                <strong>Books: </strong>
-                {series.books.length}
-              </p>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Card>
+        </Card>
+      </a>
     </Grid>
   );
 };
