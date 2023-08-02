@@ -113,8 +113,8 @@ const Books = () => {
   const [books, setBooks] = React.useState([]);
   const [booksLoaded, setBooksLoaded] = React.useState(false);
   const [filteredBooks, setFilteredBooks] = React.useState(sortBooks(books));
-  const [unreadBooks, setUnreadBooks] = React.useState([]);
   const [onlyCovers, setOnlyCovers] = React.useState(true);
+  const [showReadingChallenge, setShowReadingChallenge] = React.useState(false);
   const [showUnread, setShowUnread] = React.useState(false);
 
   const fetchBookList = async () => {
@@ -130,13 +130,33 @@ const Books = () => {
         setBooks(sortBooks(bookResponse.data));
         setBooksLoaded(true);
         setFilteredBooks(sortBooks(bookResponse.data))
-        setUnreadBooks(sortBooks(bookResponse.data).filter(book => book.is_reading_challenge_eligible && !book.read))
       }
     })()
   }, []);
 
+  const filterBooks = (books, challenge, unread) => {
+    if (challenge) {
+      books = books.filter(book => book.is_reading_challenge_eligible)
+    }
+
+    if (unread) {
+      books = books.filter(book => book.is_reading_challenge_eligible && !book.read)
+    }
+
+    return books
+  };
+
   const handleCoverChange = (e) => {
     setOnlyCovers(e.target.checked);
+  };
+
+  const handleReadingChallengeChange = (e) => {
+    setShowReadingChallenge(e.target.checked);
+    if (e.target.checked) {
+      setFilteredBooks(filteredBooks.filter(book => book.is_reading_challenge_eligible))
+    } else {
+      setFilteredBooks(filterBooks(books, false, showUnread))
+    }
   };
 
   const handleUnreadChange = (e) => {
@@ -144,35 +164,21 @@ const Books = () => {
     if (e.target.checked) {
       setFilteredBooks(filteredBooks.filter(book => book.is_reading_challenge_eligible && !book.read))
     } else {
-      setFilteredBooks(books)
+      setFilteredBooks(filterBooks(books, showReadingChallenge, false))
     }
   };
 
   const search = (e) => {
     if (e.target.value) {
-      if (showUnread) {
-        setFilteredBooks(
-          sortBooks(
-            unreadBooks.filter((book) =>
-              book.title.toLowerCase().includes(e.target.value.toLowerCase())
-            )
+      setFilteredBooks(
+        sortBooks(
+          filterBooks(books, showReadingChallenge, showUnread).filter((book) =>
+            book.title.toLowerCase().includes(e.target.value.toLowerCase())
           )
-        );
-      } else {
-        setFilteredBooks(
-          sortBooks(
-            books.filter((book) =>
-              book.title.toLowerCase().includes(e.target.value.toLowerCase())
-            )
-          )
-        );
-      }
+        )
+      );
     } else {
-      if (showUnread) {
-        setFilteredBooks(sortBooks(unreadBooks));
-      } else {
-        setFilteredBooks(sortBooks(books));
-      }
+      setFilteredBooks(filterBooks(books, showReadingChallenge, showUnread))
     }
   };
 
@@ -196,7 +202,7 @@ const Books = () => {
             <Grid
               item
               xs={12}
-              sm={3}
+              sm={2}
               style={{
                 textAlign: 'center',
                 display: 'flex',
@@ -221,7 +227,7 @@ const Books = () => {
             <Grid
               item
               xs={12}
-              sm={3}
+              sm={2}
               style={{
                 textAlign: 'center',
                 display: 'flex',
@@ -239,6 +245,29 @@ const Books = () => {
                   />
                 }
                 label="Show Unread Only"
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={2}
+              style={{
+                textAlign: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showReadingChallenge}
+                    onChange={handleReadingChallengeChange}
+                    color="primary"
+                    name="showUnread"
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                }
+                label="Show Challenge Only"
               />
             </Grid>
           </Grid>
