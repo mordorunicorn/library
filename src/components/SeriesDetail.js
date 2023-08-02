@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
+import Badge from '@material-ui/core/Badge';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(() => ({
   bookCover: {
-    maxHeight: '150px',
+    maxHeight: '100px',
     maxWidth: '100%',
     borderRadius: '5px',
   },
@@ -46,10 +47,10 @@ const SeriesDetail = (props) => {
   }, [props]);
 
   return (
-    <Grid container spacing={3} style={{ padding: '10px' }}>
-      <Card style={{ padding: '10px' }}>
+    <Grid container spacing={3} style={{ padding: '10px', width: '100%' }}>
+      <Card style={{ padding: '10px', width: '100%' }}>
         <Grid container spacing={3}>
-          <Grid item container md={9}>
+          <Grid item container xs={12}>
             <Grid item xs={12}>
               <h3>{series.name}</h3>
             </Grid>
@@ -63,8 +64,10 @@ const SeriesDetail = (props) => {
             </Grid>
             {series.books && sortBooks(series.books).map((book) => {
               return (
-                <Grid item xs={12} md={3} key={book.id} className={classes.imgContainer}>
-                  <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+                <Grid item xs={1} key={book.id} className={classes.imgContainer}>
+                  <Badge badgeContent={book.series_num} color="primary">
+                    <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+                  </Badge>
                 </Grid>
               )
             })}
