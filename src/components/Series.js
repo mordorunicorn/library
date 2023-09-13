@@ -5,6 +5,7 @@ import {
   Card,
   CircularProgress,
   Grid,
+  TextField,
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -80,6 +81,7 @@ const Series = () => {
   const classes = useStyles();
   const [series, setSeries] = React.useState([]);
   const [seriesLoaded, setSeriesLoaded] = React.useState(false);
+  const [filteredSeries, setFilteredSeries] = React.useState([]);
 
   const fetchSeriesList = async () => {
     let response = await axios.get('/api/series/');
@@ -93,9 +95,24 @@ const Series = () => {
       if (seriesResponse.success) {
         setSeries(sortSeries(seriesResponse.data));
         setSeriesLoaded(true);
+        setFilteredSeries(sortSeries(seriesResponse.data));
       }
     })()
   }, []);
+
+  const search = (e) => {
+    if (e.target.value) {
+      setFilteredSeries(
+        sortSeries(
+          series.filter((s) =>
+            s.name.toLowerCase().includes(e.target.value.toLowerCase())
+          )
+        )
+      );
+    } else {
+      setFilteredSeries(series);
+    }
+  };
 
   return (
     <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
@@ -104,7 +121,18 @@ const Series = () => {
           <CircularProgress />
         </Card> :
         <>
-          {series.map((series) =>
+          <Grid container item xs={12}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Search"
+                onChange={search}
+                margin="normal"
+                variant="outlined"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+          </Grid>
+          {filteredSeries.map((series) =>
               <SeriesDetail key={series.id} series={series} />
             )
           }
