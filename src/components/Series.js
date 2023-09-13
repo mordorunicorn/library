@@ -45,14 +45,14 @@ const SeriesDetail = ({ series }) => {
   const defaultCover = 'https://cliparting.com/wp-content/uploads/2016/05/Book-clip-art-of-students-reading-clipart-2-image-8.png';
 
   return (
-    <Grid item xs={4} sm={2} md={6} style={{ height: 250}}>
+    <Grid item xs={12} sm={6} style={{ height: 250}}>
       <a href={'/#/series/' + series.id} style={{ textDecoration: 'none' }}>
         <Card className={classes.bookBox}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={3} className={classes.imgContainer}>
+            <Grid item xs={3} className={classes.imgContainer}>
               <img src={series.books[0].cover_url || defaultCover} className={classes.bookCover} alt="" />
             </Grid>
-            <Grid item container md={9}>
+            <Grid item container xs={9}>
               <Grid item xs={12}>
                 <h3>{series.name}</h3>
               </Grid>
