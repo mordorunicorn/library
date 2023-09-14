@@ -5,6 +5,7 @@ import {
   Card,
   CircularProgress,
   Grid,
+  TextField,
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -45,14 +46,14 @@ const SeriesDetail = ({ series }) => {
   const defaultCover = 'https://cliparting.com/wp-content/uploads/2016/05/Book-clip-art-of-students-reading-clipart-2-image-8.png';
 
   return (
-    <Grid item xs={4} sm={2} md={6} style={{ height: 250}}>
+    <Grid item xs={12} sm={6} style={{ height: 250}}>
       <a href={'/#/series/' + series.id} style={{ textDecoration: 'none' }}>
         <Card className={classes.bookBox}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={3} className={classes.imgContainer}>
+            <Grid item xs={3} className={classes.imgContainer}>
               <img src={series.books[0].cover_url || defaultCover} className={classes.bookCover} alt="" />
             </Grid>
-            <Grid item container md={9}>
+            <Grid item container xs={9}>
               <Grid item xs={12}>
                 <h3>{series.name}</h3>
               </Grid>
@@ -80,6 +81,7 @@ const Series = () => {
   const classes = useStyles();
   const [series, setSeries] = React.useState([]);
   const [seriesLoaded, setSeriesLoaded] = React.useState(false);
+  const [filteredSeries, setFilteredSeries] = React.useState([]);
 
   const fetchSeriesList = async () => {
     let response = await axios.get('/api/series/');
@@ -93,9 +95,24 @@ const Series = () => {
       if (seriesResponse.success) {
         setSeries(sortSeries(seriesResponse.data));
         setSeriesLoaded(true);
+        setFilteredSeries(sortSeries(seriesResponse.data));
       }
     })()
   }, []);
+
+  const search = (e) => {
+    if (e.target.value) {
+      setFilteredSeries(
+        sortSeries(
+          series.filter((s) =>
+            s.name.toLowerCase().includes(e.target.value.toLowerCase())
+          )
+        )
+      );
+    } else {
+      setFilteredSeries(series);
+    }
+  };
 
   return (
     <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
@@ -104,7 +121,18 @@ const Series = () => {
           <CircularProgress />
         </Card> :
         <>
-          {series.map((series) =>
+          <Grid container item xs={12}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Search"
+                onChange={search}
+                margin="normal"
+                variant="outlined"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+          </Grid>
+          {filteredSeries.map((series) =>
               <SeriesDetail key={series.id} series={series} />
             )
           }

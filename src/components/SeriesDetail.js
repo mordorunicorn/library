@@ -64,9 +64,11 @@ const SeriesDetail = (props) => {
             </Grid>
             {series.books && sortBooks(series.books).map((book) => {
               return (
-                <Grid item xs={1} key={book.id} className={classes.imgContainer}>
+                <Grid item xs={4} sm={2} md={1} key={book.id} className={classes.imgContainer}>
                   <Badge badgeContent={book.series_num} color="primary">
-                    <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+                    <a href={'/#/books/' + book.id} style={{ textDecoration: 'none' }}>
+                      <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+                    </a>
                   </Badge>
                 </Grid>
               )
