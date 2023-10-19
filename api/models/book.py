@@ -41,6 +41,7 @@ class Book(models.Model):
         return (
             self.age_group in ('young-adult', 'adult')
             and not any(['aticus' in tag.name for tag in self.tags.all()])
+            and self.subgenre.name not in ['Reference', 'Art/Drawing']
         ) or (
             self.age_group != 'children'
             and ((self.series and any([book.read for book in self.series.books.all()])) or self.read)
