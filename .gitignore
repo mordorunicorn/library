@@ -1,5 +1,4 @@
 libraryenv/
-project/staticfiles/
 *.pyc
 db.sqlite3
 .python-version
