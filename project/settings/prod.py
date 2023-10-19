@@ -33,7 +33,10 @@ CORS_ORIGIN_WHITELIST = [
 CSRF_COOKIE_SECURE = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(os.path.dirname(BASE_DIR), 'build/static')]
+STATICFILES_DIRS = [
+    os.path.join(os.path.dirname(BASE_DIR), 'build/static'),
+    os.path.join(os.path.dirname(BASE_DIR), 'staticfiles'),
+]
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
