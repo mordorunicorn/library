@@ -73,6 +73,7 @@ class BookAdmin(admin.ModelAdmin):
                 series=series,
                 series_num=series_num,
                 subgenre=subgenre,
+                age_group=row['Age Group'],
                 audiobook=True if row['Audiobook'] == 'Y' else False,
                 read=True if row['Read'] == 'Y' else False,
                 cover_url=row['Cover Url'],
@@ -84,8 +85,9 @@ class BookAdmin(admin.ModelAdmin):
                     )
                     book.authors.add(author)
             for tag_name in row['Tags'].split(','):
-                tag, _ = models.Tag.objects.get_or_create(name=tag_name)
-                book.tags.add(tag)
+                if tag_name != '':
+                    tag, _ = models.Tag.objects.get_or_create(name=tag_name)
+                    book.tags.add(tag)
         except IntegrityError:
             return f'Book {row["Title"]} not imported'
 
