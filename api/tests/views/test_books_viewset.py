@@ -75,6 +75,7 @@ class BookViewSetTests(TestCase):
                 'series_num': None,
                 'subgenre': {
                     'id': self.urban_fantasy.id,
+                    'exclude_from_challenge': False,
                     'genre': {
                         'id': self.fantasy.id,
                         'name': self.fantasy.name,
@@ -107,6 +108,7 @@ class BookViewSetTests(TestCase):
                 'series_num': self.book_two.series_num,
                 'subgenre': {
                     'id': self.high_fantasy.id,
+                    'exclude_from_challenge': False,
                     'genre': {
                         'id': self.fantasy.id,
                         'name': self.fantasy.name,
@@ -141,6 +143,7 @@ class BookViewSetTests(TestCase):
                 'series_num': None,
                 'subgenre': {
                     'id': self.paranormal.id,
+                    'exclude_from_challenge': False,
                     'genre': {
                         'id': self.horror.id,
                         'name': self.horror.name,
@@ -235,6 +238,7 @@ class BookViewSetTests(TestCase):
             'series_num': None,
             'subgenre': {
                 'id': self.urban_fantasy.id,
+                'exclude_from_challenge': False,
                 'genre': {
                     'id': self.fantasy.id,
                     'name': self.fantasy.name,

@@ -23,7 +23,7 @@ class AuthorAdmin(admin.ModelAdmin):
 class BookAdmin(admin.ModelAdmin):
     change_list_template = "admin/entities/books_changelist.html"
 
-    list_display = ("title", "read", "author_display", "series")
+    list_display = ("title", "read", "author_display", "series", "series_num")
     list_filter = ("read", "subgenre", "age_group", "tags")
     search_fields = ("title", "authors__first_name", "authors__last_name", "series__name")
     fields = (
