@@ -23,6 +23,9 @@ const useStyles = makeStyles(() => ({
     maxHeight: '150px',
     maxWidth: '100%',
   },
+  defaultCover: {
+    color: '#0066e2',
+  },
   imgContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -47,22 +50,31 @@ const sortBooks = (bookList) => {
 
 const BookCover = ({ book }) => {
   const classes = useStyles();
-  const defaultCover = 'https://cliparting.com/wp-content/uploads/2016/05/Book-clip-art-of-students-reading-clipart-2-image-8.png';
   const showChildrenBadge = !book.read && book.age_group === 'children';
 
   return (
     <Grid container item xs={4} sm={2} md={1}>
-      <a href={'/#/books/' + book.id} style={{ textDecoration: 'none' }}>
+      <a href={'/#/books/' + book.id} style={{ textDecoration: "none" }}>
         {book.is_reading_challenge_eligible ?
           <Badge badgeContent="unread" color="primary" invisible={ book.read }>
             <Grid item xs={12} className={classes.imgContainer}>
-              <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+              <>
+                {book.cover_url ?
+                  <img src={book.cover_url} className={classes.bookCover} alt="" /> :
+                  <h3 className={classes.defaultCover}>{book.title}</h3>
+                }
+              </>
             </Grid>
           </Badge>
         :
           <Badge badgeContent="unread" color="secondary" invisible={ !showChildrenBadge }>
             <Grid item xs={12} className={classes.imgContainer}>
-              <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+              <>
+                {book.cover_url ?
+                  <img src={book.cover_url} className={classes.bookCover} alt="" /> :
+                  <h3 className={classes.defaultCover}>{book.title}</h3>
+                }
+              </>
             </Grid>
           </Badge>
         }
