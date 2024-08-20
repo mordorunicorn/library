@@ -37,6 +37,8 @@ const useStyles = makeStyles(() => ({
   title: {
     marginTop: '0.35em',
     marginLeft: '5%',
+    display: 'flex',
+    justifyContent: 'center',
   },
 }));
 
@@ -100,11 +102,8 @@ const Stats = () => {
               <Typography variant="h3" gutterBottom className={classes.title}>
                 Books
               </Typography>
-              <Typography variant="h5" gutterBottom className={classes.title}>
-                Reading Challenge: {stats.books_by_read_status.read + stats.books_by_read_status.unread}
-              </Typography>
-              <Typography variant="h5" gutterBottom className={classes.title}>
-                Total: {stats.book_count}
+              <Typography variant="h4" gutterBottom className={classes.title}>
+                {stats.book_count}
               </Typography>
             </Card>
           </Grid>
@@ -113,7 +112,7 @@ const Stats = () => {
               <Typography variant="h3" gutterBottom className={classes.title}>
                 Authors
               </Typography>
-              <Typography variant="h5" gutterBottom className={classes.title}>
+              <Typography variant="h4" gutterBottom className={classes.title}>
                 {stats.author_count}
               </Typography>
             </Card>
@@ -123,7 +122,7 @@ const Stats = () => {
               <Typography variant="h3" gutterBottom className={classes.title}>
                 Series
               </Typography>
-              <Typography variant="h5" gutterBottom className={classes.title}>
+              <Typography variant="h4" gutterBottom className={classes.title}>
                 {stats.series_count}
               </Typography>
             </Card>
@@ -136,6 +135,9 @@ const Stats = () => {
               <Card className={classes.graphBox}>
                 <CircularProgressWithLabel value={readingChallengeProgress} />
               </Card>
+              <Typography variant="h5" gutterBottom className={classes.title}>
+                {stats.books_by_read_status.read}/{stats.books_by_read_status.read + stats.books_by_read_status.unread}
+              </Typography>
             </Card>
           </Grid>
         </>
