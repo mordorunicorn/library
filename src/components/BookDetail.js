@@ -9,6 +9,7 @@ const useStyles = makeStyles(() => ({
     maxHeight: '150px',
     maxWidth: '100%',
     borderRadius: '5px',
+    overflowY: 'auto',
   },
   imgContainer: {
     display: 'flex',
@@ -64,7 +65,6 @@ const BookDetail = (props) => {
                   `${book.subgenre.genre.name} > ${book.subgenre.name}`
                 )}
               </p>
-              {book.read || <p>[Unread]</p>}
             </Grid>
             <Grid item xs={6}>
               {book.series && (
@@ -73,6 +73,15 @@ const BookDetail = (props) => {
                   {book.series.name}
                 </p>
               )}
+            </Grid>
+            <Grid item xs={6}>
+              <p>
+                <strong>Tags: </strong>
+                {book.tags && book.tags.map(tag => tag.name).join(", ")}
+              </p>
+            </Grid>
+            <Grid item xs={6}>
+              {book.read || <p>[Unread]</p>}
             </Grid>
           </Grid>
         </Grid>

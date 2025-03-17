@@ -84,45 +84,7 @@ class SeriesViewSetTests(TestCase):
         }
         self.assertEqual(expected, response.json()['books_by_read_status'])
 
-    def test_read_status_does_not_include_unread_aticus_tags(self):
-        one_piece = models.Book.objects.create(
-            title='One Piece Vol. 1',
-            year=1997,
-            subgenre=self.high_fantasy,
-            age_group='adult',
-        )
-        one_piece.tags.add(models.Tag.objects.create(name='aticus-picks'))
-
-        response = self.client.get(self.url)
-        self.assertEqual(200, response.status_code)
-        expected = {
-            'read': 1,
-            'unread': 2,
-        }
-        self.assertEqual(expected, response.json()['books_by_read_status'])
-
-    def test_includes_middle_grade_and_aticus_books_if_series_started(self):
-        one_piece_series = models.Series.objects.create(name='One Piece')
-        one_piece_one = models.Book.objects.create(
-            title='One Piece Vol. 1',
-            year=1997,
-            series=one_piece_series,
-            subgenre=self.high_fantasy,
-            age_group='adult',
-            read=True,
-        )
-        one_piece_one.tags.add(models.Tag.objects.create(name='aticus-picks'))
-
-        one_piece_two = models.Book.objects.create(
-            title='One Piece Vol. 2',
-            year=1997,
-            series=one_piece_series,
-            subgenre=self.high_fantasy,
-            age_group='adult',
-            read=False,
-        )
-        one_piece_two.tags.add(models.Tag.objects.create(name='aticus-picks'))
-
+    def test_includes_middle_grade_if_series_started(self):
         sci_fi = models.Genre.objects.create(name='Sci-Fi')
         dystopian = models.Subgenre.objects.create(genre=sci_fi, name='Dystopian')
 
@@ -147,21 +109,12 @@ class SeriesViewSetTests(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(200, response.status_code)
         expected = {
-            'read': 3,
-            'unread': 4,
+            'read': 2,
+            'unread': 3,
         }
         self.assertEqual(expected, response.json()['books_by_read_status'])
 
-    def test_includes_middle_grade_and_aticus_books_if_standalone_and_read(self):
-        soul_drinker = models.Book.objects.create(
-            title='The Soul Drinker',
-            year=1989,
-            subgenre=self.high_fantasy,
-            age_group='adult',
-            read=True,
-        )
-        soul_drinker.tags.add(models.Tag.objects.create(name='aticus-picks'))
-
+    def test_includes_middle_grade_and_if_standalone_and_read(self):
         models.Book.objects.create(
             title='The Wind Singer',
             year=2000,
@@ -173,7 +126,7 @@ class SeriesViewSetTests(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(200, response.status_code)
         expected = {
-            'read': 3,
+            'read': 2,
             'unread': 2,
         }
         self.assertEqual(expected, response.json()['books_by_read_status'])

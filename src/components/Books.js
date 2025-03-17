@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     height: '100%',
     color: '#000000',
+    overflowY: 'auto',
   },
   bookCover: {
     maxHeight: '150px',
@@ -85,7 +86,6 @@ const BookCover = ({ book }) => {
 
 const BookDetail = ({ book }) => {
   const classes = useStyles();
-  const defaultCover = 'https://cliparting.com/wp-content/uploads/2016/05/Book-clip-art-of-students-reading-clipart-2-image-8.png';
 
   return (
     <Grid item xs={4} sm={2} md={6} style={{ height: 250}}>
@@ -93,7 +93,10 @@ const BookDetail = ({ book }) => {
         <Card className={classes.bookBox}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={3} className={classes.imgContainer}>
-              <img src={book.cover_url || defaultCover} className={classes.bookCover} alt="" />
+              {book.cover_url ?
+                <img src={book.cover_url} className={classes.bookCover} alt="" /> :
+                <h3 className={classes.defaultCover}>{book.title}</h3>
+              }
             </Grid>
             <Grid item container md={9}>
               <Grid item xs={12}>
@@ -110,15 +113,23 @@ const BookDetail = ({ book }) => {
                   <strong>Genre: </strong>
                   {book.subgenre.genre.name} > {book.subgenre.name}
                 </p>
-                {book.read || <p>[Unread]</p>}
               </Grid>
               <Grid item xs={6}>
-                {book.series && (
+                {book.series &&
                   <p>
                     <strong>Series: </strong>
                     {book.series.name}
                   </p>
-                )}
+                }
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>Tags: </strong>
+                  {book.tags.map(tag => tag.name).join(", ")}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                {book.read || <p>[Unread]</p>}
               </Grid>
             </Grid>
           </Grid>
