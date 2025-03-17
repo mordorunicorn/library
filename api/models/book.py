@@ -40,7 +40,6 @@ class Book(models.Model):
     def is_reading_challenge_eligible(self):
         return (
             self.age_group in ('young-adult', 'adult')
-            and not any(['aticus' in tag.name for tag in self.tags.all()])
             and not self.subgenre.exclude_from_challenge
         ) or (
             self.age_group != 'children'
